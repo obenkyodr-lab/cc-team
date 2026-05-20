@@ -27,19 +27,19 @@
 │   ├── todos/
 │   ├── notes/
 │   └── logs/
-├── operations/             ← 日常業務（選択時のみ）
+├── operations/             ← 日常業務フォルダ（常設）
 │   ├── CLAUDE.md
-│   ├── minutes/
+│   ├── minutes/            ← 議事録（日常業務選択時）
 │   │   └── CLAUDE.md
-│   └── mail/
+│   └── mail/               ← メール（日常業務選択時）
 │       └── CLAUDE.md
-├── agents/                 ← 学会発表（選択時のみ）
+├── agents/                 ← エージェントフォルダ（常設）
 │   ├── CLAUDE.md
-│   ├── abstract/
+│   ├── abstract/           ← 学会抄録（学会発表・研究選択時）
 │   │   └── CLAUDE.md
-│   └── slide/
+│   └── slide/              ← スライド（学会発表・研究選択時）
 │       └── CLAUDE.md
-└── projects/               ← 本格的な研究（選択時のみ）
+└── projects/               ← 研究・個別案件フォルダ（常設）
     └── CLAUDE.md
 ```
 

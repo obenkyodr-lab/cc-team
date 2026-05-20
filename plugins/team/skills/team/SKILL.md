@@ -34,9 +34,11 @@
 
 `AskUserQuestion`（multiSelect: true）の選択肢:
 
-- **日常業務**（メール、議事録）→ `operations/` を作成
-- **学会発表**（抄録、スライド）→ `agents/` を作成
-- **本格的な研究**（アイデア整理、論文作成）→ `projects/` を作成
+- **日常業務**（メール、議事録）→ `operations/` 内に `minutes/`、`mail/` を作成
+- **学会発表**（抄録、スライド）→ `agents/` 内に `abstract/`、`slide/` を作成
+- **研究**（臨床研究・論文作成など）→ `agents/` 内に `abstract/`、`slide/` を作成。運用開始後に研究パイプラインエージェントの追加を提案する
+
+`operations/`、`agents/`、`projects/` の3フォルダは選択に関わらず常に作成される。Q2 の選択内容はフォルダ内のサブフォルダを決定する。
 
 ### Step 3: セットアップ（Automatic）
 
@@ -56,19 +58,19 @@
 │   ├── notes/
 │   └── logs/
 │       └── YYYY-MM.md
-├── operations/                        ← 「日常業務」選択時のみ作成
+├── operations/                        ← 常設（必ず作成）
 │   ├── CLAUDE.md
-│   ├── minutes/
+│   ├── minutes/                       ← 「日常業務」選択時のみ作成
 │   │   └── CLAUDE.md
-│   └── mail/
+│   └── mail/                          ← 「日常業務」選択時のみ作成
 │       └── CLAUDE.md
-├── agents/                            ← 「学会発表」選択時のみ作成
+├── agents/                            ← 常設（必ず作成）
 │   ├── CLAUDE.md
-│   ├── abstract/
+│   ├── abstract/                      ← 「学会発表」または「研究」選択時に作成
 │   │   └── CLAUDE.md
-│   └── slide/
+│   └── slide/                         ← 「学会発表」または「研究」選択時に作成
 │       └── CLAUDE.md
-└── projects/                          ← 「本格的な研究」選択時のみ作成
+└── projects/                          ← 常設（必ず作成）
     └── CLAUDE.md
 ```
 
@@ -130,15 +132,15 @@
 5. `secretary/` とサブフォルダ（`inbox/`, `todos/`, `notes/`, `logs/`）を作成
 6. `references/operations.md` の secretary/CLAUDE.md テンプレートから `secretary/CLAUDE.md` を生成
 7. 今日の日付で `secretary/todos/YYYY-MM-DD.md` を作成
-8. **Q2 で「日常業務」を選択した場合:**
-   - `operations/`, `operations/minutes/`, `operations/mail/` を作成
-   - `operations/CLAUDE.md`, `operations/minutes/CLAUDE.md`, `operations/mail/CLAUDE.md` を生成
-9. **Q2 で「学会発表」を選択した場合:**
-   - `agents/`, `agents/abstract/`, `agents/slide/` を作成
-   - `agents/CLAUDE.md`, `agents/abstract/CLAUDE.md`, `agents/slide/CLAUDE.md` を生成
-10. **Q2 で「本格的な研究」を選択した場合:**
-    - `projects/` を作成
-    - `projects/CLAUDE.md` を生成
+8. `operations/`、`agents/`、`projects/` を常設フォルダとして作成し、各 `CLAUDE.md` を生成する
+9. **Q2 で「日常業務」を選択した場合:**
+   - `operations/minutes/`, `operations/mail/` を作成
+   - `operations/minutes/CLAUDE.md`, `operations/mail/CLAUDE.md` を生成
+10. **Q2 で「学会発表」または「研究」を選択した場合:**
+    - `agents/abstract/`, `agents/slide/` を作成
+    - `agents/abstract/CLAUDE.md`, `agents/slide/CLAUDE.md` を生成
+11. **Q2 で「研究」を選択した場合:**
+    - 完了メッセージに以下を追加する: 「💡 **研究パイプラインエージェント**: 情報収集・論文要約・研究デザイン・データ解析・論文執筆・論文査読エージェントを追加できます。運用を始めたら『情報収集エージェントを追加して』と話しかけてください。」
 
 **完了メッセージ:**
 
@@ -147,14 +149,14 @@
 > ```
 > .team/
 > ├── CLAUDE.md
-> ├── secretary/      ← TODO・メモ・相談（常設）
-> ├── operations/     ← 日常業務（議事録・メール）     ※選択時のみ
-> │   ├── minutes/
-> │   └── mail/
-> ├── agents/         ← 学会発表（抄録・スライド）     ※選択時のみ
-> │   ├── abstract/
-> │   └── slide/
-> └── projects/       ← 本格的な研究・個別案件         ※選択時のみ
+> ├── secretary/         ← TODO・メモ・相談（常設）
+> ├── operations/        ← 日常業務フォルダ（常設）
+> │   ├── minutes/       ← 議事録（日常業務選択時）
+> │   └── mail/          ← メール（日常業務選択時）
+> ├── agents/            ← エージェントフォルダ（常設）
+> │   ├── abstract/      ← 学会抄録（学会発表・研究選択時）
+> │   └── slide/         ← スライド（学会発表・研究選択時）
+> └── projects/          ← 研究・個別案件フォルダ（常設）
 > ```
 >
 > `/team` でいつでも話しかけてください。
@@ -368,6 +370,138 @@
 2. 該当フォルダと `CLAUDE.md` を生成
 3. `.team/CLAUDE.md` の構成ツリーと業務一覧テーブルを更新
 4. 完了報告
+
+---
+
+## 起動の自動化
+
+「起動を自動化したい」「毎回 `/team` を手動で打つのが面倒」と言われたら、VS Code のタスク機能を使った自動化方法を案内する。
+
+### 標準フロー（現状）
+
+```
+VS Code でプロジェクトを開く → ターミナルを開く → claude を実行 → /team を入力
+```
+
+### 自動化手順
+
+`.vscode/tasks.json` に以下を追加する（ファイルが存在しない場合は新規作成）:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Team AI",
+      "type": "shell",
+      "command": "claude",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      }
+    }
+  ]
+}
+```
+
+設定後、VS Code でプロジェクトを開くとターミナルに `claude` が自動起動する。その後 `/team` を入力するだけで秘書が起動する。
+
+> **注意**: VS Code で「タスクを自動実行してよいか」の確認ダイアログが出た場合は「許可」を選択すること。
+
+---
+
+## Gmail 連携
+
+「Gmail を連携したい」と言われたら、まず以下を `AskUserQuestion` で確認する:
+
+> Claude Code のサブスクリプションに使用している Google アカウントと、連携したい Gmail アカウントは同じですか？
+
+### シナリオ1: 同じ Google アカウントの場合（簡単）
+
+> 手順:
+> 1. Claude Code **デスクトップアプリ**を開く
+> 2. 左下の設定アイコン → **Integrations** → Gmail を有効化
+> 3. Google アカウントで認証する
+> 4. 認証完了後、すぐにメール機能が使えます
+
+### シナリオ2: 別の Google アカウントの Gmail を使う場合
+
+`@monsoft/mcp-gmail` パッケージを使って接続する。以下の手順で案内する。
+
+> **Step 1: Google Cloud Console で認証情報を作成**
+> 1. https://console.cloud.google.com にアクセス（どちらのアカウントでもログイン可）
+> 2. 新規プロジェクトを作成（例: `gmail-mcp`）
+> 3. 「APIとサービス」→「ライブラリ」→ **Gmail API** を検索して有効化
+> 4. 「認証情報」→「OAuthクライアントIDを作成」→ アプリの種類: **デスクトップアプリ**
+> 5. 作成された JSON ファイルをダウンロード
+>
+> **Step 2: 認証ファイルを保存**
+> ターミナルで以下を実行:
+> ```bash
+> mkdir -p ~/.gmail-mcp
+> mv ~/Downloads/client_secret_*.json ~/.gmail-mcp/gmail-oauth.json
+> ```
+>
+> **Step 3: MCP サーバーを登録**
+> ```bash
+> claude mcp add-json gmail-team '{"type":"stdio","command":"npx","args":["-y","@monsoft/mcp-gmail","--oauth-path","~/.gmail-mcp/gmail-oauth.json","--credentials-path","~/.gmail-mcp/gmail-token.json"]}'
+> ```
+>
+> **Step 4: 初回認証（ブラウザが開く）**
+> ```bash
+> npx @monsoft/mcp-gmail --oauth-path ~/.gmail-mcp/gmail-oauth.json --credentials-path ~/.gmail-mcp/gmail-token.json
+> ```
+> ブラウザが開いたら、連携したい Gmail アカウントでログインする。「認証完了」と表示されたら成功。
+>
+> **Step 5: Claude Code を再起動して確認**
+> 再起動後、「メールを確認して」と話しかけて動作確認する。
+
+### トークン切れ時の対応
+
+「メールが取得できない」「認証エラー」が出た場合、以下をユーザーに伝える:
+
+> ターミナルで以下を実行してください（ブラウザが自動で開きます）:
+> ```bash
+> npx @monsoft/mcp-gmail --oauth-path ~/.gmail-mcp/gmail-oauth.json --credentials-path ~/.gmail-mcp/gmail-token.json
+> ```
+> ブラウザで Gmail アカウントにログインし直して、認証完了後に再試行してください。
+
+---
+
+## 自動メールチェック
+
+Gmail 連携後、「毎回自動でメールを確認してほしい」と言われたら:
+
+1. `AskUserQuestion` で確認する:
+   > 毎回のセッション開始時に、前回から届いたメールを自動でチェックして要約を表示しますか？
+
+2. 希望する場合、以下のルーティンをセッション開始時（または朝の挨拶時）に**提案せず即座に**実行する:
+
+### メールチェックのルーティン
+
+1. `secretary/logs/mail-check-log.md` を確認して前回チェック日時を取得する（当日チェック済みなら実行しない）
+2. 前回チェック以降のメールを取得する
+3. 重要度で分類して表示:
+
+   **🔴 要返信**（個人・企業からの直接メッセージで返信が必要なもの）
+   - 返信案を作成して Gmail 下書きに保存する
+   - TODO に追加する（期限は原則3営業日以内）
+
+   **🟡 要対応**（返信以外のアクションが必要なもの: 書類提出・フォーム回答・期限付き手続きなど）
+   - TODO に追加する
+
+   **🟢 情報把握**（学会案内・論文通知・お知らせなど）
+   - 口頭で共有するのみ。TODO には追加しない
+
+   **⚪ 不要**（ニュースレター・営業メールなど）
+   - 報告しない
+
+4. **CC・BCC メールは返信不要なことが多い**。全体配信・お知らせ系は 🟢 または ⚪ 扱いとし、本当に個人への返信が必要か慎重に判断する
+5. チェック完了後、`secretary/logs/mail-check-log.md` にチェック日時・件数・要対応件数を記録する
 
 ---
 

@@ -68,9 +68,11 @@ cc-team/
 - その他
 
 **Q2: よく行う業務（複数選択可）**
-- 日常業務（メール、議事録）→ `operations/` を作成
-- 学会発表（抄録、スライド）→ `agents/` を作成
-- 本格的な研究（アイデア整理、論文作成）→ `projects/` を作成
+- 日常業務（メール、議事録）→ `operations/` 内に `minutes/`、`mail/` を作成
+- 学会発表（抄録、スライド）→ `agents/` 内に `abstract/`、`slide/` を作成
+- 研究（臨床研究・論文作成など）→ `agents/` 内に `abstract/`、`slide/` を作成。運用開始後に研究パイプラインエージェントの追加を提案する
+
+`operations/`・`agents/`・`projects/` の3フォルダは選択に関わらず常に作成される。
 
 ### 生成される構造
 
@@ -85,19 +87,19 @@ cc-team/
 │   ├── notes/                  ← 壁打ち・相談メモ・意思決定ログ
 │   └── logs/                   ← セッションログ（月1ファイル・最新が先頭）
 │       └── YYYY-MM.md
-├── operations/                 ← 「日常業務」選択時のみ作成
+├── operations/                 ← 日常業務フォルダ（常設）
 │   ├── CLAUDE.md
-│   ├── minutes/                ← 議事録
+│   ├── minutes/                ← 議事録（「日常業務」選択時のみ作成）
 │   │   └── CLAUDE.md
-│   └── mail/                   ← メール下書き
+│   └── mail/                   ← メール下書き（「日常業務」選択時のみ作成）
 │       └── CLAUDE.md
-├── agents/                     ← 「学会発表」選択時のみ作成
+├── agents/                     ← エージェントフォルダ（常設）
 │   ├── CLAUDE.md
-│   ├── abstract/               ← 学会抄録エージェント
+│   ├── abstract/               ← 学会抄録（「学会発表」または「研究」選択時のみ作成）
 │   │   └── CLAUDE.md
-│   └── slide/                  ← スライドエージェント
+│   └── slide/                  ← スライド（「学会発表」または「研究」選択時のみ作成）
 │       └── CLAUDE.md
-└── projects/                   ← 「本格的な研究」選択時のみ作成
+└── projects/                   ← 研究・個別案件フォルダ（常設）
     └── CLAUDE.md
 ```
 
@@ -265,6 +267,78 @@ Edit([プロジェクトディレクトリ]/.team/**)
 ---
 
 ## 10. 対象チーム
+
+---
+
+## 11. オプション設定
+
+初期セットアップには含まれないが、秘書に「〇〇したい」と話しかけることで設定できるオプション機能。
+
+### 11.1 起動の自動化
+
+現状の起動フロー: VS Code でプロジェクトを開く → ターミナルを開く → `claude` を実行 → `/team` を入力
+
+「起動を自動化して」と秘書に伝えると、`.vscode/tasks.json` を生成する。設定後は VS Code でプロジェクトを開くだけで Claude Code が自動起動する。
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Team AI",
+      "type": "shell",
+      "command": "claude",
+      "runOptions": { "runOn": "folderOpen" },
+      "presentation": { "reveal": "always", "panel": "new", "focus": true }
+    }
+  ]
+}
+```
+
+> VS Code で「タスクを自動実行してよいか」の確認ダイアログが出た場合は「許可」を選択する。
+
+### 11.2 Gmail 連携
+
+「Gmail を連携したい」と秘書に伝えると、サブスクリプションの Google アカウントと連携先が同じかどうかを確認して、いずれかの手順を案内する。
+
+**シナリオ1: Claude と同じ Google アカウントの Gmail（簡単）**
+
+Claude Code デスクトップアプリの設定 → **Integrations** → Gmail を有効化して認証するだけ。
+
+**シナリオ2: 別の Google アカウントの Gmail**
+
+`@monsoft/mcp-gmail` パッケージを使った設定が必要。秘書が以下の手順を案内する:
+
+1. Google Cloud Console でプロジェクト作成・Gmail API 有効化・OAuth クライアントID（デスクトップアプリ）を作成・JSON をダウンロード
+2. ダウンロードした JSON を `~/.gmail-mcp/gmail-oauth.json` に保存
+3. MCP サーバーを登録:
+   ```bash
+   claude mcp add-json gmail-team '{"type":"stdio","command":"npx","args":["-y","@monsoft/mcp-gmail","--oauth-path","~/.gmail-mcp/gmail-oauth.json","--credentials-path","~/.gmail-mcp/gmail-token.json"]}'
+   ```
+4. 初回認証（ブラウザが開いて Gmail アカウントでログイン）:
+   ```bash
+   npx @monsoft/mcp-gmail --oauth-path ~/.gmail-mcp/gmail-oauth.json --credentials-path ~/.gmail-mcp/gmail-token.json
+   ```
+5. Claude Code を再起動して動作確認
+
+**トークン切れ時の対応**
+
+「メールが取得できない」エラーが出た場合、初回認証と同じコマンドを再実行してブラウザで再ログインする。
+
+### 11.3 自動メールチェック
+
+Gmail 連携後に有効にできる。「毎回自動でメールをチェックして」と秘書に伝えると設定される。
+
+セッション開始時（または朝の挨拶時）に前回チェック以降のメールを自動取得・分類・表示する:
+
+| 分類 | 内容 | 対応 |
+|------|------|------|
+| 🔴 要返信 | 個人・企業からの直接メッセージ | 返信案を作成して Gmail 下書き保存。TODO に追加 |
+| 🟡 要対応 | 書類提出・フォーム回答・期限付き手続き | TODO に追加 |
+| 🟢 情報把握 | 学会案内・論文通知・お知らせ | 口頭共有のみ。TODO には追加しない |
+| ⚪ 不要 | ニュースレター・営業メール | 報告しない |
+
+CC・BCC の全体配信メールは返信不要なことが多いため、慎重に判断する。
 
 - 外科・内科などの診療チーム
 - 臨床研究グループ
