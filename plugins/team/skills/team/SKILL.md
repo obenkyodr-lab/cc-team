@@ -83,7 +83,9 @@
     "allow": [
       "Read([CWD]/.team/**)",
       "Write([CWD]/.team/**)",
-      "Edit([CWD]/.team/**)"
+      "Edit([CWD]/.team/**)",
+      "Bash(mkdir [CWD]/.team/**)",
+      "Bash(mkdir -p [CWD]/.team/**)"
     ],
     "additionalDirectories": [
       "[CWD]/.team"
