@@ -1,0 +1,10 @@
+{
+  "name": "cc-team",
+  "plugins": [
+    {
+      "name": "team",
+      "source": "./plugins/team",
+      "description": "チーム業務を効率化するAI実務支援スキル。"
+    }
+  ]
+}
