@@ -167,6 +167,17 @@ cc-team/
 - 不明な医療情報（薬剤量・エビデンス・統計値）は推測せず「要確認」とマーク
 - 学会発表に患者情報が含まれる場合は倫理審査の確認を促す
 
+### ⚠️ 患者データ解析に関する重要な注意事項
+
+患者データをクラウドベースのAI（本ツールを含む）に入力する行為は、**情報漏洩のリスク**を伴います。
+患者データの解析にこのツールを使用する場合は、**ご自身の責任**のもとでご判断ください。
+
+**完全なローカルLLM（インターネット非接続の環境）での解析を強く推奨します。**
+
+> This tool is not designed for processing identifiable patient data via cloud-based AI.
+> Use of patient data is entirely at the user's own risk.
+> We strongly recommend using fully local LLMs for any patient data analysis.
+
 ---
 
 ## 8. 対象チーム
