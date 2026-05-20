@@ -74,26 +74,69 @@
 
 **生成手順:**
 
-1. `.team/` ディレクトリを作成
-2. `references/claude-md-template.md` のテンプレートを使って `.team/CLAUDE.md` を生成
+1. 今日のカレントディレクトリのフルパスを取得する（`pwd` 相当）。以降 `[CWD]` と表記する
+2. `.claude/` ディレクトリを作成し、`.claude/settings.json` を以下の内容で生成する:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Read([CWD]/.team/**)",
+      "Write([CWD]/.team/**)",
+      "Edit([CWD]/.team/**)"
+    ],
+    "additionalDirectories": [
+      "[CWD]/.team"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Bash(rm -rf *)",
+      "Bash(rm -r*)",
+      "Bash(sudo *)",
+      "Bash(chmod 777 *)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(curl * | bash)",
+      "Bash(wget * | bash)",
+      "Bash(git push --force *)",
+      "Bash(killall *)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": false,
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "*.npmjs.org",
+        "registry.yarnpkg.com"
+      ]
+    }
+  }
+}
+```
+
+3. `.team/` ディレクトリを作成
+4. `references/claude-md-template.md` のテンプレートを使って `.team/CLAUDE.md` を生成
    - `{{TEAM_TYPE}}` ← Q1 の回答
    - `{{GOALS_AND_CHALLENGES}}` ← Q2 の回答
    - `{{CREATED_DATE}}` ← 今日の日付
    - `{{ADDITIONAL_OPERATIONS}}` ← Q2 に応じたディレクトリツリー
    - `{{OPERATION_TABLE_ROWS}}` ← Q2 に応じたテーブル行
    - `{{PERSONALIZATION_NOTES}}` ← Q1+Q2 から生成したパーソナライズメモ
-3. `secretary/` とサブフォルダ（`inbox/`, `todos/`, `notes/`, `logs/`）を作成
-4. `references/operations.md` の secretary/CLAUDE.md テンプレートから `secretary/CLAUDE.md` を生成
-5. 今日の日付で `secretary/todos/YYYY-MM-DD.md` を作成
-6. **Q2 で「日常業務」を選択した場合:**
+5. `secretary/` とサブフォルダ（`inbox/`, `todos/`, `notes/`, `logs/`）を作成
+6. `references/operations.md` の secretary/CLAUDE.md テンプレートから `secretary/CLAUDE.md` を生成
+7. 今日の日付で `secretary/todos/YYYY-MM-DD.md` を作成
+8. **Q2 で「日常業務」を選択した場合:**
    - `operations/`, `operations/minutes/`, `operations/mail/` を作成
    - `operations/CLAUDE.md`, `operations/minutes/CLAUDE.md`, `operations/mail/CLAUDE.md` を生成
-7. **Q2 で「学会発表」を選択した場合:**
+9. **Q2 で「学会発表」を選択した場合:**
    - `agents/`, `agents/abstract/`, `agents/slide/` を作成
    - `agents/CLAUDE.md`, `agents/abstract/CLAUDE.md`, `agents/slide/CLAUDE.md` を生成
-8. **Q2 で「本格的な研究」を選択した場合:**
-   - `projects/` を作成
-   - `projects/CLAUDE.md` を生成
+10. **Q2 で「本格的な研究」を選択した場合:**
+    - `projects/` を作成
+    - `projects/CLAUDE.md` を生成
 
 **完了メッセージ:**
 
