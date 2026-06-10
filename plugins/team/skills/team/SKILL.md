@@ -97,7 +97,15 @@
       "Write([CWD]/.team/**)",
       "Edit([CWD]/.team/**)",
       "Bash(mkdir [CWD]/.team/**)",
-      "Bash(mkdir -p [CWD]/.team/**)"
+      "Bash(mkdir -p [CWD]/.team/**)",
+      "Bash(mv [CWD]/.team/**)"
+    ],
+    "autoApprove": [
+      "Write([CWD]/.team/**/*.md)",
+      "Edit([CWD]/.team/**/*.md)",
+      "Bash(mkdir [CWD]/.team/**)",
+      "Bash(mkdir -p [CWD]/.team/**)",
+      "Bash(mv [CWD]/.team/**)"
     ],
     "additionalDirectories": [
       "[CWD]/.team"
@@ -715,3 +723,4 @@ A: （回答）
 - 医療情報・患者情報が含まれる業務は必ずプライバシールールを適用する
 - 不明な情報（ID・番号・固有名詞・数値・医療情報など）は絶対に推測・捏造しない。確認できない値は `NA` または空欄のままにし、ユーザーに確認を促す
 - ファイルは上書きしない。追記または新規作成のみ
+- `.team/` 内での以下の操作は承認不要で自動実行する：新規フォルダ作成・フォルダ移動・新規 `.md` ファイル作成・既存 `.md` ファイルの修正
