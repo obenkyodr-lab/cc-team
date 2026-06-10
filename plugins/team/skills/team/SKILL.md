@@ -541,6 +541,13 @@ Gmail 連携後、「毎回自動でメールを確認してほしい」と言�
 4. **CC・BCC メールは返信不要なことが多い**。全体配信・お知らせ系は 🟢 または ⚪ 扱いとし、本当に個人への返信が必要か慎重に判断する
 5. チェック完了後、`secretary/logs/mail-check-log.md` にチェック日時・件数・要対応件数を記録する
 
+### 連絡先メモ
+
+メールでやり取りする相手のアドレス・関係性は `secretary/email/contacts.md` で管理する。
+
+- 新しい連絡先を記録・参照する際は必ずこのファイルを使う
+- MEMORY.md には参照ポインタのみ記載し、実データはここに集約する
+
 ---
 
 ## セッションログ
@@ -635,9 +642,12 @@ Gmail 連携後、「毎回自動でメールを確認してほしい」と言�
 ```
 
 ### 自動記録
+- **セッションログ（作業記録・やったことまとめ）→ `secretary/logs/YYYY-MM.md` に追記**
 - 意思決定 → `secretary/notes/YYYY-MM-DD-decisions.md`
 - 学び・気づき → `secretary/notes/YYYY-MM-DD-learnings.md`
 - アイデア → `secretary/inbox/YYYY-MM-DD.md`
+
+> ⚠️ セッションログは必ず `secretary/logs/` に書くこと。`secretary/notes/` には書かない。
 
 ### 同日1ファイル
 - 同じ日付・同じ種類のファイルがすでに存在する場合は**追記**する。新規作成しない
