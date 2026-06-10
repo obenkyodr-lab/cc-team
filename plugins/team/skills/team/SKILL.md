@@ -76,7 +76,9 @@
 │       └── logs/                      ← スライド作業の詳細ログ
 ├── projects/                          ← 常設（必ず作成）
 │   ├── CLAUDE.md
-│   └── logs/                          ← プロジェクト横断の詳細ログ
+│   └── 2026-surgery-conference/       ← 例：プロジェクトごとにサブフォルダを作成
+│       ├── overview.md                ← 目標・進捗
+│       └── logs/                      ← このプロジェクトの作業ログ
 └── ceo/                               ← 常設（必ず作成）
     ├── CLAUDE.md
     ├── videos/                        ← YouTube・動画メモ
@@ -156,7 +158,7 @@
    - `operations/mail/`、`operations/mail/CLAUDE.md`、`operations/mail/logs/`
    - `agents/abstract/`、`agents/abstract/CLAUDE.md`、`agents/abstract/logs/`
    - `agents/slide/`、`agents/slide/CLAUDE.md`、`agents/slide/logs/`
-   - `projects/logs/`
+
    - `ceo/`、`ceo/CLAUDE.md`、`ceo/videos/`、`ceo/videos/_index.md`、`ceo/notes/`
 10. 完了メッセージに以下を追加する: 「💡 **専門エージェントの追加**: データ解析・論文要約・研究デザインなどの専門エージェントをいつでも追加できます。『解析エージェントを追加して』と話しかけてください。」
 
