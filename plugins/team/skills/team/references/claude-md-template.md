@@ -21,6 +21,7 @@
 ```
 .team/
 ├── CLAUDE.md
+├── 0_inbox/                ← ファイル投入トレイ（常設）
 ├── secretary/              ← 常設
 │   ├── CLAUDE.md
 │   ├── inbox/
