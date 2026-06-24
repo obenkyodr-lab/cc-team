@@ -53,7 +53,6 @@
 ├── 0_inbox/                           ← ユーザーがファイルを投入するトレイ（常設）
 ├── secretary/                         ← 常設（必ず作成）
 │   ├── CLAUDE.md
-│   ├── inbox/
 │   ├── todos/
 │   │   └── YYYY-MM-DD.md
 │   ├── notes/
@@ -77,9 +76,12 @@
 │       └── logs/                      ← スライド作業の詳細ログ
 ├── projects/                          ← 常設（必ず作成）
 │   ├── CLAUDE.md
-│   └── 2026-surgery-conference/       ← 例：プロジェクトごとにサブフォルダを作成
-│       ├── overview.md                ← 目標・進捗
-│       └── logs/                      ← このプロジェクトの作業ログ
+│   ├── project-a/                     ← 例：プロジェクトごとにサブフォルダを作成
+│   │   ├── overview.md                ← 目標・進捗
+│   │   └── log.md                     ← このプロジェクトの作業ログ
+│   └── project-b/
+│       ├── overview.md
+│       └── log.md
 └── ceo/                               ← 常設（必ず作成）
     ├── CLAUDE.md
     ├── videos/                        ← YouTube・動画メモ
@@ -151,7 +153,7 @@
    - `{{ADDITIONAL_OPERATIONS}}` ← Q2 に応じたディレクトリツリー
    - `{{OPERATION_TABLE_ROWS}}` ← Q2 に応じたテーブル行
    - `{{PERSONALIZATION_NOTES}}` ← Q1+Q2 から生成したパーソナライズメモ
-5. `secretary/` とサブフォルダ（`inbox/`, `todos/`, `notes/`, `logs/`）を作成
+5. `secretary/` とサブフォルダ（`todos/`, `notes/`, `logs/`）を作成
 6. `references/operations.md` の secretary/CLAUDE.md テンプレートから `secretary/CLAUDE.md` を生成
 7. 今日の日付で `secretary/todos/YYYY-MM-DD.md` を作成
 8. `operations/`、`agents/`、`projects/` を常設フォルダとして作成し、各 `CLAUDE.md` を生成する
@@ -317,7 +319,7 @@
 | ------------------------ | ------------------------------------------------------ |
 | TODO・タスク関連         | `secretary/todos/` の今日のファイルに追記・表示        |
 | 壁打ち・相談・ブレスト   | 対話で深掘りし、まとまったら `secretary/notes/` に保存 |
-| メモ・クイックキャプチャ | `secretary/inbox/` にタイムスタンプ付きで記録          |
+| メモ・クイックキャプチャ | `secretary/notes/` にタイムスタンプ付きで記録          |
 | 「今日やること」         | 今日のTODOファイルを表示                               |
 | 雑談・挨拶               | 親しみやすく応答                                       |
 
@@ -701,7 +703,7 @@ Gmail 連携後、「毎回自動でメールを確認してほしい」と言�
 - **セッションログ（作業記録・やったことまとめ）→ `secretary/logs/YYYY-MM.md` に追記**
 - 意思決定 → `secretary/notes/YYYY-MM-DD-decisions.md`
 - 学び・気づき → `secretary/notes/YYYY-MM-DD-learnings.md`
-- アイデア → `secretary/inbox/YYYY-MM-DD.md`
+- アイデア → `secretary/notes/YYYY-MM-DD.md`
 
 > ⚠️ セッションログは必ず `secretary/logs/` に書くこと。`secretary/notes/` には書かない。
 

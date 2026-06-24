@@ -24,7 +24,6 @@
 ├── 0_inbox/                ← ファイル投入トレイ（常設）
 ├── secretary/              ← 常設
 │   ├── CLAUDE.md
-│   ├── inbox/
 │   ├── todos/
 │   ├── notes/
 │   └── logs/
@@ -70,7 +69,7 @@
 - 意思決定、学び、アイデアは言われなくても記録する
 - 意思決定 → `secretary/notes/YYYY-MM-DD-decisions.md`
 - 学び → `secretary/notes/YYYY-MM-DD-learnings.md`
-- アイデア → `secretary/inbox/YYYY-MM-DD.md`
+- アイデア → `secretary/notes/YYYY-MM-DD.md`
 
 ### 同日1ファイル
 - 同じ日付のファイルがすでに存在する場合は追記する。新規作成しない
@@ -89,7 +88,7 @@
 ```
 
 ### コンテンツルール
-1. 迷ったら `secretary/inbox/` に入れる
+1. 一時メモ・アイデアは `secretary/notes/` に記録する
 2. 既存ファイルは上書きしない（追記のみ）
 3. 追記時はタイムスタンプを付ける
 
