@@ -216,17 +216,25 @@
 | **研究・講演・案件** | 臨床研究、論文、講演スライド、学会発表 | `projects/` |
 | **専門エージェント** | データ解析など専門スキルが必要な依頼 | `agents/[name]/` |
 
-#### 自動分類（確認不要）
+#### 振り分け早見表（確認不要）
 
-| 依頼の種類 | 振り分け先 |
-| ---------- | ---------- |
-| 議事録     | `operations/minutes/` |
-| メール下書き | `operations/mail/` |
-| 学会抄録   | `agents/abstract/`（→ projects/[学会名]/ に成果物保存）|
-| スライド   | `agents/slide/`（→ projects/[講演名]/ に成果物保存）|
-| データ解析 | `agents/analyst/`（存在しない場合は作成を提案）|
-| 論文要約   | `projects/[論文名]/` |
-| 研究プロジェクト | `projects/[研究名]/` |
+> ⚠️ 作業開始前に必ず「作業前に読むCLAUDE.md」列のファイルを読んでから着手すること。
+
+| 依頼の種類 | 振り分け先 | 作業前に読むCLAUDE.md |
+| ---------- | ---------- | -------------------- |
+| 議事録 | `operations/minutes/` | `operations/minutes/CLAUDE.md` |
+| メール下書き・返信 | `operations/mail/` | `operations/mail/CLAUDE.md` |
+| 学会抄録 | `agents/abstract/`（→ projects/[学会名]/ に成果物保存）| `agents/abstract/CLAUDE.md` |
+| スライド・発表準備 | `agents/slide/`（→ projects/[講演名]/ に成果物保存）| `agents/slide/CLAUDE.md` |
+| データ解析 | `agents/analyst/`（存在しない場合は作成を提案）| `agents/analyst/CLAUDE.md` |
+| 論文要約・文献整理 | `agents/summarizer/`（存在しない場合は作成を提案）| `agents/summarizer/CLAUDE.md` |
+| 研究デザイン・RQ設計 | `agents/designer/`（存在しない場合は作成を提案）| `agents/designer/CLAUDE.md` |
+| 論文執筆 | `agents/author/`（存在しない場合は作成を提案）| `agents/author/CLAUDE.md` |
+| 査読・コメント対応 | `agents/reviewer/`（存在しない場合は作成を提案）| `agents/reviewer/CLAUDE.md` |
+| 優先順位・進捗管理 | `pm/` | `pm/CLAUDE.md` |
+| 経費・請求書管理 | `finance/` | `finance/CLAUDE.md` |
+| 個人メモ・学習・動画要約 | `ceo/` | `ceo/CLAUDE.md` |
+| 研究案件・個別プロジェクト | `projects/[研究名]/` | `projects/CLAUDE.md` |
 
 #### 要確認（AskUserQuestion）
 
@@ -250,10 +258,12 @@
 
 ### 朝の挨拶（Morning Routine）
 
-「おはよう」「おはようございます」「morning」など朝の挨拶を受けたら、**提案せず即座に**以下を実行する:
+「おはよう」「おはようございます」「morning」など朝の挨拶を受けたら、**提案せず即座に `/morning` スキルを実行する**。
+
+`/morning` スキルが利用できない環境では、以下を代わりに実行する:
 
 1. 今日の日付を確認する
-2. `secretary/todos/YYYY-MM-DD.md` を読み込み、未完了タスクを表示する
+2. `.team/secretary/todos/YYYY-MM-DD.md` を読み込み、未完了タスクを表示する
 3. 「今日もよろしくお願いします！」など一言添える
 
 当日のTODOファイルが存在しない場合は新規作成してから表示する。

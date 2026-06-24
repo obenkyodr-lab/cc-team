@@ -808,6 +808,28 @@ role: "[役割]"
 - 同じ日付のファイルがすでにある場合は追記する。新規作成しない
 - ファイル操作前に必ず今日の日付を確認する
 
+## 振り分け早見表
+
+> ⚠️ 作業開始前に必ず「作業前に読むCLAUDE.md」列のファイルを読んでから着手すること。
+
+| 依頼の種類 | 振り分け先 | 作業前に読むCLAUDE.md |
+|------------|------------|----------------------|
+| 議事録作成 | `operations/minutes/` | `operations/minutes/CLAUDE.md` |
+| メール下書き・返信 | `operations/mail/` | `operations/mail/CLAUDE.md` |
+| 学会抄録 | `agents/abstract/` | `agents/abstract/CLAUDE.md` |
+| スライド・発表準備 | `agents/slide/` | `agents/slide/CLAUDE.md` |
+| データ解析 | `agents/analyst/` | `agents/analyst/CLAUDE.md` |
+| 論文要約・文献整理 | `agents/summarizer/` | `agents/summarizer/CLAUDE.md` |
+| 研究デザイン・RQ設計 | `agents/designer/` | `agents/designer/CLAUDE.md` |
+| 論文執筆 | `agents/author/` | `agents/author/CLAUDE.md` |
+| 査読・コメント対応 | `agents/reviewer/` | `agents/reviewer/CLAUDE.md` |
+| 優先順位・進捗管理 | `pm/` | `pm/CLAUDE.md` |
+| 経費・請求書管理 | `finance/` | `finance/CLAUDE.md` |
+| 個人メモ・学習・動画要約 | `ceo/` | `ceo/CLAUDE.md` |
+| 研究案件・個別プロジェクト | `projects/[研究名]/` | `projects/CLAUDE.md` |
+
+> 📝 エージェントが未作成の場合（`agents/analyst/` など存在しない場合）は、対応するフォルダと CLAUDE.md の作成を提案してから実行する。
+
 ## 業務追加の提案
 - 同じ種類の業務が1回でも繰り返されたら、業務フォルダ作成を提案する
 - ユーザーが明示的に依頼した場合は即座に作成する

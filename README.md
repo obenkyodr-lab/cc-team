@@ -9,7 +9,7 @@ Claude Code 用プラグイン。`/team` を実行するだけで秘書AIが起�
 1. Claude Code でプロジェクトフォルダを開く
 2. `/team` を実行する
 3. 3問の質問（チームの名前・種類・よく行う業務）に答える → 自動でフォルダが生成される
-4. 「おはよう」と入力する → 未完了TODOが表示される
+4. 「おはよう」または `/morning` を実行する → TODO・メール・予定が一覧表示される
 5. 「今日やることを整理して」と依頼する → `secretary/todos/YYYY-MM-DD.md` に保存される
 
 **「動いた」と感じたら、あとは話しかけるだけ。**
@@ -18,8 +18,10 @@ Claude Code 用プラグイン。`/team` を実行するだけで秘書AIが起�
 
 ## できること
 
+- **モーニングルーティン（`/morning`）** — TODO・メール・今日の予定を一覧表示。Gmail・Calendar連携済みなら自動分類まで実行
 - **TODO管理** — 話しかけるだけで今日のタスクを整理・追記
 - **Inboxトレイ** — ファイルを `0_inbox/` に置いて「入れました」と言うだけで自動処理・振り分け
+- **振り分け早見表** — 依頼の種類ごとに振り分け先と参照すべきCLAUDE.mdを明示。作業ミスを防ぐ
 - **メール下書き** — 状況を説明するだけで件名・本文を作成
 - **議事録作成** — 会議メモや書き起こしテキストから構造化された議事録を生成
 - **学会抄録** — 背景・方法・結果・結論を整理、文字数調整にも対応
@@ -92,14 +94,32 @@ Claude Code 用プラグイン。`/team` を実行するだけで秘書AIが起�
 
 ## 振り分けルール
 
-依頼の種類によって、秘書が自動的に適切なフォルダへ振り分ける。
+依頼の種類によって、秘書が自動的に適切なフォルダへ振り分ける。作業前に必ず「作業前に読むCLAUDE.md」列のファイルを読んでから着手する。
 
-| 依頼の種類 | 振り分け先 |
-|---|---|
-| 議事録・メール・繰り返し業務 | `operations/` |
-| 臨床研究・論文・学会発表・講演 | `projects/` |
-| データ解析・文献要約・抄録作成など専門依頼 | `agents/[name]/` |
-| YouTube要約・読書メモ・思考整理 | `ceo/` |
+| 依頼の種類 | 振り分け先 | 作業前に読むCLAUDE.md |
+|---|---|---|
+| 議事録作成 | `operations/minutes/` | `operations/minutes/CLAUDE.md` |
+| メール下書き・返信 | `operations/mail/` | `operations/mail/CLAUDE.md` |
+| 学会抄録 | `agents/abstract/` | `agents/abstract/CLAUDE.md` |
+| スライド・発表準備 | `agents/slide/` | `agents/slide/CLAUDE.md` |
+| データ解析 | `agents/analyst/` | `agents/analyst/CLAUDE.md` |
+| 論文要約・文献整理 | `agents/summarizer/` | `agents/summarizer/CLAUDE.md` |
+| 研究デザイン・RQ設計 | `agents/designer/` | `agents/designer/CLAUDE.md` |
+| 論文執筆 | `agents/author/` | `agents/author/CLAUDE.md` |
+| 査読・コメント対応 | `agents/reviewer/` | `agents/reviewer/CLAUDE.md` |
+| 優先順位・進捗管理 | `pm/` | `pm/CLAUDE.md` |
+| 経費・請求書管理 | `finance/` | `finance/CLAUDE.md` |
+| 個人メモ・学習・動画要約 | `ceo/` | `ceo/CLAUDE.md` |
+| 研究案件・個別プロジェクト | `projects/[研究名]/` | `projects/CLAUDE.md` |
+
+---
+
+## スキル一覧
+
+| スキル | 起動方法 | 概要 |
+|---|---|---|
+| `/team` | `/team` と入力 | メインスキル。秘書AIが起動し、すべての業務を受け付ける |
+| `/morning` | `/morning` または「おはよう」 | モーニングルーティン。TODO・メール・予定を一括表示 |
 
 ---
 
