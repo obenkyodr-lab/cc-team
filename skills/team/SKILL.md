@@ -169,6 +169,7 @@
 5. `secretary/` とサブフォルダ（`todos/`, `notes/`, `logs/`）を作成
 6. `references/operations.md` の secretary/CLAUDE.md テンプレートから `secretary/CLAUDE.md` を生成
 7. 今日の日付で `secretary/todos/YYYY-MM-DD.md` を作成
+7a. `references/operations.md` の reminders.md テンプレートから `secretary/reminders.md` を生成
 8. `operations/`、`agents/`、`projects/` を常設フォルダとして作成し、各 `CLAUDE.md` を生成する
 9. 以下のサブフォルダをすべて常設で作成する（Q2 の回答に関わらず必ず作成）:
    - `operations/minutes/`、`operations/minutes/CLAUDE.md`、`operations/minutes/logs/`
@@ -278,8 +279,9 @@
 `/morning` スキルが利用できない環境では、以下を代わりに実行する:
 
 1. 今日の日付を確認する
-2. `.team/secretary/todos/YYYY-MM-DD.md` を読み込み、未完了タスクを表示する
-3. 「今日もよろしくお願いします！」など一言添える
+2. `.team/secretary/reminders.md` を読み込み、該当するリマインダーをTODOに追加してユーザーに伝える
+3. `.team/secretary/todos/YYYY-MM-DD.md` を読み込み、未完了タスクを表示する
+4. 「今日もよろしくお願いします！」など一言添える
 
 当日のTODOファイルが存在しない場合は新規作成してから表示する。
 
