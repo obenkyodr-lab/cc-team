@@ -96,6 +96,19 @@
 
 ```json
 {
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "DATE=$(date '+%Y-%m-%d'); case $(date '+%u') in 1) D=月 ;; 2) D=火 ;; 3) D=水 ;; 4) D=木 ;; 5) D=金 ;; 6) D=土 ;; 7) D=日 ;; esac; FILE=\"[CWD]/.team/secretary/todos/${DATE}.md\"; [ -f \"$FILE\" ] || printf '# TODO %s（%s曜日）\\n\\n## 🔴 高優先度\\n\\n## 🟡 通常優先度\\n\\n## 🟢 低優先度\\n\\n---\\n\\n## ✅ 本日完了\\n' \"$DATE\" \"$D\" > \"$FILE\""
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Read([CWD]/.team/**)",
