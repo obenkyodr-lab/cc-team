@@ -38,20 +38,11 @@ Claude Code 用プラグイン。`/team` を実行するだけで秘書AIが起�
 
 ## インストール
 
-`~/.claude/settings.json` に以下を追加する:
+Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リポジトリ名を伝えて「プラグインインストールして」と言うだけでも同じ内容が実行される）:
 
-```json
-{
-  "extraKnownMarketplaces": [
-    {
-      "url": "https://raw.githubusercontent.com/obenkyodr-lab/cc-team/main/.claude-plugin/marketplace.json",
-      "name": "cc-team"
-    }
-  ],
-  "enabledPlugins": {
-    "team@cc-team": true
-  }
-}
+```
+/plugin marketplace add obenkyodr-lab/cc-team
+/plugin install team@cc-team
 ```
 
 詳しいセットアップ手順 → [docs/setup.md](docs/setup.md)

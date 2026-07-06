@@ -1,0 +1,14 @@
+{
+  "name": "cc-team",
+  "owner": {
+    "name": "obenkyodr"
+  },
+  "description": "cc-team: 秘書AIから始める仮想組織プラグイン",
+  "plugins": [
+    {
+      "name": "team",
+      "source": "./",
+      "description": "秘書が窓口となり、TODO管理・メール下書き・議事録作成・学会抄録・スライド整理などを自然な会話でこなす仮想組織スキル"
+    }
+  ]
+}

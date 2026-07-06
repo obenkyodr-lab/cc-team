@@ -10,16 +10,27 @@
 
 ### マーケットプレイスとして登録する（推奨）
 
-`~/.claude/settings.json` を開き、以下を追加する:
+Claude Code で以下の2コマンドを実行する:
+
+```
+/plugin marketplace add obenkyodr-lab/cc-team
+/plugin install team@cc-team
+```
+
+GitHubのリポジトリURL（`https://github.com/obenkyodr-lab/cc-team`）を伝えて「プラグインインストールして」と言うだけでも、Claude Codeが上記と同じコマンドを実行してくれる。
+
+チーム全体に自動配布したい場合は、`~/.claude/settings.json`（または `.claude/settings.json`）に以下を追加する:
 
 ```json
 {
-  "extraKnownMarketplaces": [
-    {
-      "url": "https://raw.githubusercontent.com/[your-org]/cc-team/main/.claude-plugin/marketplace.json",
-      "name": "cc-team"
+  "extraKnownMarketplaces": {
+    "cc-team": {
+      "source": {
+        "source": "github",
+        "repo": "obenkyodr-lab/cc-team"
+      }
     }
-  ],
+  },
   "enabledPlugins": {
     "team@cc-team": true
   }
@@ -30,7 +41,7 @@ Claude Code を再起動すると `/team` が使えるようになる。
 
 ### ローカルで直接使う場合
 
-リポジトリをクローンし、`plugins/team/skills/team/SKILL.md` を参照する。
+リポジトリをクローンし、`skills/team/SKILL.md` を参照する。
 
 ---
 
