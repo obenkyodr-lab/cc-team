@@ -13,9 +13,11 @@
 Claude Code で以下の2コマンドを実行する:
 
 ```
-/plugin marketplace add obenkyodr-lab/cc-team
+/plugin marketplace add https://github.com/obenkyodr-lab/cc-team
 /plugin install team@cc-team
 ```
+
+> `owner/repo` 形式（例: `obenkyodr-lab/cc-team`）はSSH経由でのcloneがデフォルトになり、SSH鍵未設定の環境ではエラーになることがある。フルURLを使えばHTTPSでcloneされるため確実。
 
 GitHubのリポジトリURL（`https://github.com/obenkyodr-lab/cc-team`）を伝えて「プラグインインストールして」と言うだけでも、Claude Codeが上記と同じコマンドを実行してくれる。
 

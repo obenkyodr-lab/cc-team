@@ -41,9 +41,11 @@ Claude Code 用プラグイン。`/team` を実行するだけで秘書AIが起�
 Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リポジトリ名を伝えて「プラグインインストールして」と言うだけでも同じ内容が実行される）:
 
 ```
-/plugin marketplace add obenkyodr-lab/cc-team
+/plugin marketplace add https://github.com/obenkyodr-lab/cc-team
 /plugin install team@cc-team
 ```
+
+> `owner/repo` 形式（例: `obenkyodr-lab/cc-team`）はSSH経由でのcloneがデフォルトになり、SSH鍵未設定の環境ではエラーになることがある。フルURLを使えばHTTPSでcloneされるため確実。
 
 詳しいセットアップ手順 → [docs/setup.md](docs/setup.md)
 
