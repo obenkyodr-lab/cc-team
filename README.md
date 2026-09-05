@@ -31,8 +31,8 @@ Claude Code 用プラグイン。`/team` を実行するだけで秘書AIが起�
 - **論文要約** — PDFや論文テキストを構造化要約
 - **研究プロジェクト管理** — 案件ごとに専用フォルダを作成して成果物を整理
 - **社長室（CEO）管理** — YouTube要約・読書メモ・思考整理をceoフォルダに自動保存
-- **二層ログ** — 各フォルダの詳細ログ＋秘書の月次ログで作業履歴を自動管理
-- **Gmail連携**（オプション） — メールを自動分類・返信下書きを作成（[詳細](docs/gmail.md)）
+- **二層ログ** — 各フォルダの詳細ログ＋秘書の日次ログ（月ごとフォルダ）で作業履歴を自動管理
+- **Gmail・Google Calendar連携**（オプション） — メールを自動分類・返信下書きを作成、予定を一覧表示。接続エラー時の再接続手順も含む（[詳細](docs/mcp.md)）
 
 ---
 
@@ -62,7 +62,7 @@ Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リ�
 ├── secretary/                 ← 窓口。TODO・メモ・相談はすべてここに
 │   ├── todos/                 ← 日次TODO（YYYY-MM-DD.md）
 │   ├── notes/                 ← メモ・アイデア・壁打ち・意思決定ログ
-│   ├── logs/                  ← セッションログ（月1ファイル）
+│   ├── logs/                  ← セッションログ（月フォルダ`YYYY-MM/`＋日次ファイル）
 │   └── reminders.md           ← 定期リマインダー（毎週・毎月・日付指定）
 ├── operations/                ← 繰り返し発生する定型業務
 │   ├── minutes/               ← 議事録
@@ -187,5 +187,6 @@ APIキー・パスワード・秘密鍵などの認証情報をファイルや�
 |---|---|
 | [docs/setup.md](docs/setup.md) | 詳しいインストール手順・初回設定 |
 | [docs/security.md](docs/security.md) | セキュリティ設定の詳細（permissions / sandbox / deny） |
-| [docs/gmail.md](docs/gmail.md) | Gmail連携の手順 |
+| [docs/mcp.md](docs/mcp.md) | Gmail・Google Calendar連携の手順、接続エラー時の再接続方法 |
 | [docs/examples.md](docs/examples.md) | 具体的な使い方の例 |
+| [docs/troubleshooting.md](docs/troubleshooting.md) | うまく指示が伝わらないときのコツ |
