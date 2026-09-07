@@ -69,11 +69,6 @@ Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リ�
 │   │   └── logs/              ← 議事録作業の詳細ログ
 │   └── mail/                  ← メール下書き
 │       └── logs/              ← メール作業の詳細ログ
-├── agents/                    ← 専門業務エージェント
-│   ├── abstract/              ← 学会抄録
-│   │   └── logs/              ← 抄録作業の詳細ログ
-│   └── slide/                 ← スライド
-│       └── logs/              ← スライド作業の詳細ログ
 ├── projects/                  ← 研究・個別案件（プロジェクトごとにサブフォルダ）
 │   ├── project-a/             ← 例：プロジェクトごとにサブフォルダを作成
 │   │   ├── overview.md        ← 目標・進捗
@@ -81,6 +76,11 @@ Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リ�
 │   └── project-b/
 │       ├── overview.md
 │       └── log.md
+├── agents/                    ← 専門業務エージェント
+│   ├── abstract/              ← 学会抄録
+│   │   └── logs/              ← 抄録作業の詳細ログ
+│   └── slide/                 ← スライド
+│       └── logs/              ← スライド作業の詳細ログ
 └── ceo/                       ← 個人の情報収集・学習・思考整理
     ├── videos/                ← YouTube・動画要約（_index.mdにインデックス）
     └── notes/                 ← 読書メモ・記事要約・人脈メモ

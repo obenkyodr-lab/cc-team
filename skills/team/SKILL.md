@@ -66,14 +66,6 @@
 │   └── mail/                          ← 常設（必ず作成）
 │       ├── CLAUDE.md
 │       └── logs/                      ← メール作業の詳細ログ
-├── agents/                            ← 常設（必ず作成）
-│   ├── CLAUDE.md
-│   ├── abstract/                      ← 常設（必ず作成）
-│   │   ├── CLAUDE.md
-│   │   └── logs/                      ← 抄録作業の詳細ログ
-│   └── slide/                         ← 常設（必ず作成）
-│       ├── CLAUDE.md
-│       └── logs/                      ← スライド作業の詳細ログ
 ├── projects/                          ← 常設（必ず作成）
 │   ├── CLAUDE.md
 │   ├── project-a/                     ← 例：プロジェクトごとにサブフォルダを作成
@@ -82,6 +74,14 @@
 │   └── project-b/
 │       ├── overview.md
 │       └── log.md
+├── agents/                            ← 常設（必ず作成）
+│   ├── CLAUDE.md
+│   ├── abstract/                      ← 常設（必ず作成）
+│   │   ├── CLAUDE.md
+│   │   └── logs/                      ← 抄録作業の詳細ログ
+│   └── slide/                         ← 常設（必ず作成）
+│       ├── CLAUDE.md
+│       └── logs/                      ← スライド作業の詳細ログ
 └── ceo/                               ← 常設（必ず作成）
     ├── CLAUDE.md
     ├── videos/                        ← YouTube・動画メモ
@@ -306,7 +306,7 @@ if __name__ == "__main__":
 6. `references/operations.md` の secretary/CLAUDE.md テンプレートから `secretary/CLAUDE.md` を生成
 7. 今日の日付で `secretary/todos/YYYY-MM-DD.md` を作成
 7a. `references/operations.md` の reminders.md テンプレートから `secretary/reminders.md` を生成
-8. `operations/`、`agents/`、`projects/` を常設フォルダとして作成し、各 `CLAUDE.md` を生成する
+8. `operations/`、`projects/`、`agents/` を常設フォルダとして作成し、各 `CLAUDE.md` を生成する
 9. 以下のサブフォルダをすべて常設で作成する（Q2 の回答に関わらず必ず作成）:
    - `operations/minutes/`、`operations/minutes/CLAUDE.md`、`operations/minutes/logs/`
    - `operations/mail/`、`operations/mail/CLAUDE.md`、`operations/mail/logs/`
@@ -328,10 +328,10 @@ if __name__ == "__main__":
 > ├── operations/        ← 日常業務フォルダ（常設）
 > │   ├── minutes/       ← 議事録
 > │   └── mail/          ← メール
+> ├── projects/          ← 研究・個別案件フォルダ（常設）
 > ├── agents/            ← エージェントフォルダ（常設）
 > │   ├── abstract/      ← 学会抄録
 > │   └── slide/         ← スライド
-> ├── projects/          ← 研究・個別案件フォルダ（常設）
 > └── ceo/               ← 個人メモ・学習・動画要約（常設）
 >     ├── videos/        ← YouTube・動画メモ
 >     └── notes/         ← 読書・記事・思考整理

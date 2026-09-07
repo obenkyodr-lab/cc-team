@@ -33,14 +33,14 @@
 │   │   └── CLAUDE.md
 │   └── mail/               ← メール（日常業務選択時）
 │       └── CLAUDE.md
-├── agents/                 ← エージェントフォルダ（常設）
-│   ├── CLAUDE.md
-│   ├── abstract/           ← 学会抄録（学会発表・研究選択時）
-│   │   └── CLAUDE.md
-│   └── slide/              ← スライド（学会発表・研究選択時）
-│       └── CLAUDE.md
-└── projects/               ← 研究・個別案件フォルダ（常設）
-    └── CLAUDE.md
+├── projects/               ← 研究・個別案件フォルダ（常設）
+│   └── CLAUDE.md
+└── agents/                 ← エージェントフォルダ（常設）
+    ├── CLAUDE.md
+    ├── abstract/           ← 学会抄録（学会発表・研究選択時）
+    │   └── CLAUDE.md
+    └── slide/              ← スライド（学会発表・研究選択時）
+        └── CLAUDE.md
 ```
 
 {{ADDITIONAL_OPERATIONS}}
