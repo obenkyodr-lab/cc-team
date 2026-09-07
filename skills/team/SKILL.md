@@ -103,7 +103,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "DATE=$(date '+%Y-%m-%d'); case $(date '+%u') in 1) D=月 ;; 2) D=火 ;; 3) D=水 ;; 4) D=木 ;; 5) D=金 ;; 6) D=土 ;; 7) D=日 ;; esac; FILE=\"[CWD]/.team/secretary/todos/${DATE}.md\"; [ -f \"$FILE\" ] || printf '# TODO %s（%s曜日）\\n\\n## 🔴 高優先度\\n\\n## 🟡 通常優先度\\n\\n## 🟢 低優先度\\n\\n---\\n\\n## ✅ 本日完了\\n' \"$DATE\" \"$D\" > \"$FILE\""
+            "command": "DATE=$(date '+%Y-%m-%d'); case $(date '+%u') in 1) D=月 ;; 2) D=火 ;; 3) D=水 ;; 4) D=木 ;; 5) D=金 ;; 6) D=土 ;; 7) D=日 ;; esac; python3 \"[CWD]/.team/scripts/todo_carryover.py\" \"[CWD]/.team/secretary/todos\" \"$DATE\" \"$D\" >> \"[CWD]/.team/secretary/logs/todo_carryover.log\" 2>&1"
           }
         ]
       }
@@ -155,6 +155,142 @@
     }
   }
 }
+```
+
+2a. `.team/scripts/` ディレクトリを作成し、`.team/scripts/todo_carryover.py` を以下の内容で生成する（実行権限は不要）。
+   - **背景（2026-09-07判明の事故を踏まえた対応）**：上記フックが「その日最初のメッセージ」で先回りして空のTODOスケルトンを作ってしまうため、Claude が後から「前日の未完了タスクを引き継ごう」としても「ファイルは既に存在する」と判断して引き継ぎをスキップしてしまう事故が起きた。このスクリプトをフックから直接呼び出すことで、ファイル作成そのものに前日引き継ぎを組み込み、Claude の記憶・判断に依存しない構造にする
+
+```python
+#!/usr/bin/env python3
+"""新しい日のTODOファイルを、前日までの未完了タスクを機械的に引き継いだ状態で新規作成する。"""
+import sys, os, re, glob, datetime
+
+SECTION_HEADERS = {"🔴": "## 🔴 高優先度", "🟡": "## 🟡 通常優先度", "🟢": "## 🟢 低優先度", "⏸": "## ⏸️ 保留"}
+DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})\.md$")
+TASK_RE = re.compile(r"^- \[(.)\]")
+DEADLINE_RE = re.compile(r"期限:\s*(\d{4}-\d{2}-\d{2})")
+FIRSTSEEN_RE = re.compile(r"初出:(\d{1,2})/(\d{1,2})\b")
+FIRSTSEEN_UNKNOWN_RE = re.compile(r"初出:不明")
+
+def parse_sections(text):
+    sections = {"🔴": [], "🟡": [], "🟢": [], "⏸": []}
+    current = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("## "):
+            matched = None
+            for key in SECTION_HEADERS:
+                if stripped.startswith(f"## {key}"):
+                    matched = key
+                    break
+            if stripped.startswith("## ✅"):
+                current = None
+                continue
+            current = matched
+            continue
+        if current is not None and TASK_RE.match(stripped):
+            sections[current].append(stripped)
+    return sections
+
+def has_content(sections):
+    return any(lines for lines in sections.values())
+
+def find_source_file(todos_dir, today_str):
+    today_date = datetime.date.fromisoformat(today_str)
+    candidates = []
+    for path in glob.glob(os.path.join(todos_dir, "*.md")):
+        m = DATE_RE.match(os.path.basename(path))
+        if not m:
+            continue
+        d = datetime.date.fromisoformat(m.group(1))
+        if d < today_date:
+            candidates.append((d, path))
+    candidates.sort(reverse=True)
+    for d, path in candidates:
+        with open(path, encoding="utf-8") as f:
+            sections = parse_sections(f.read())
+        if has_content(sections):
+            return path, sections
+    return None, None
+
+def recompute_tags(line, today_date):
+    if FIRSTSEEN_UNKNOWN_RE.search(line):
+        if "⚠️要判断" not in line:
+            line = line.rstrip() + " ⚠️要判断"
+        return line
+    m = FIRSTSEEN_RE.search(line)
+    if not m:
+        return line
+    month, day = int(m.group(1)), int(m.group(2))
+    try:
+        first_date = datetime.date(today_date.year, month, day)
+        if first_date > today_date:
+            first_date = datetime.date(today_date.year - 1, month, day)
+    except ValueError:
+        return line
+    elapsed = (today_date - first_date).days
+    field_re = re.compile(r"初出:\d{1,2}/\d{1,2}(?:\s*\(\d+日経過\))?(?:\s*⚠️\S+)*")
+    new_field = f"初出:{month}/{day}"
+    if elapsed > 0:
+        new_field += f" ({elapsed}日経過)"
+    if elapsed >= 3:
+        new_field += " ⚠️要判断"
+    dm = DEADLINE_RE.search(line)
+    if dm and datetime.date.fromisoformat(dm.group(1)) < today_date:
+        new_field += " ⚠️期限超過"
+    return field_re.sub(new_field, line, count=1)
+
+def build_new_content(today_str, weekday_kanji, carried, source_label):
+    lines = [f"# TODO {today_str}（{weekday_kanji}曜日）", ""]
+    if source_label:
+        total = sum(len(v) for k, v in carried.items() if k != "⏸")
+        lines.append(f"> ⚠️ {source_label}分の未完了タスク{total}件を自動引き継ぎしました（`.team/scripts/todo_carryover.py`）。")
+        lines.append("")
+    lines.append(SECTION_HEADERS["🔴"]); lines.append("")
+    if len(carried["🔴"]) > 5:
+        lines.append(f"> ⚠️ 高優先度が{len(carried['🔴'])}件あります。絞り込みが必要です。"); lines.append("")
+    lines += carried["🔴"]
+    if carried["🔴"]: lines.append("")
+    lines.append(SECTION_HEADERS["🟡"]); lines.append("")
+    lines += carried["🟡"]
+    if carried["🟡"]: lines.append("")
+    lines.append(SECTION_HEADERS["🟢"]); lines.append("")
+    lines += carried["🟢"]
+    if carried["🟢"]: lines.append("")
+    if carried["⏸"]:
+        lines.append(SECTION_HEADERS["⏸"]); lines.append("")
+        lines += carried["⏸"]; lines.append("")
+    lines += ["---", "", "## ✅ 本日完了", ""]
+    return "\n".join(lines)
+
+def main():
+    if len(sys.argv) < 4:
+        print("usage: todo_carryover.py <todos_dir> <today YYYY-MM-DD> <weekday kanji>", file=sys.stderr)
+        return 1
+    todos_dir, today_str, weekday_kanji = sys.argv[1], sys.argv[2], sys.argv[3]
+    target = os.path.join(todos_dir, f"{today_str}.md")
+    if os.path.exists(target):
+        return 0
+    today_date = datetime.date.fromisoformat(today_str)
+    source_path, source_sections = find_source_file(todos_dir, today_str)
+    carried = {"🔴": [], "🟡": [], "🟢": [], "⏸": []}
+    source_label = None
+    if source_path:
+        source_label = os.path.basename(source_path).replace(".md", "")
+        for key in ("🔴", "🟡", "🟢"):
+            for line in source_sections[key]:
+                if len(line) > 3 and line[3] == " ":
+                    carried[key].append(recompute_tags(line, today_date))
+        for line in source_sections["⏸"]:
+            if len(line) > 3 and line[3] == "~":
+                carried["⏸"].append(line)
+    os.makedirs(todos_dir, exist_ok=True)
+    with open(target, "w", encoding="utf-8") as f:
+        f.write(build_new_content(today_str, weekday_kanji, carried, source_label))
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
 ```
 
 3. `.team/` ディレクトリを作成
