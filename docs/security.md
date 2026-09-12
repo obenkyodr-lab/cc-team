@@ -26,13 +26,16 @@ Bash(mkdir [プロジェクトディレクトリ]/.team/**)
 | 禁止コマンド | 理由 |
 |---|---|
 | `Read(**/.env)` | APIキーなど環境変数ファイルの読み取りを禁止 |
-| `Bash(rm -rf *)` / `Bash(rm -r*)` | 再帰的削除を禁止 |
+| `Bash(rm *)` / `Bash(rm -rf *)` / `Bash(rm -r*)` | ファイル削除を禁止（単一ファイル・再帰いずれも）。Claudeに削除権限を与えず、削除は `0_inbox/trash/` への `mv` で代替する |
+| `Bash(rmdir *)` / `Bash(unlink *)` | ディレクトリ削除・リンク解除を禁止 |
 | `Bash(sudo *)` | 管理者権限コマンドを禁止 |
 | `Bash(chmod 777 *)` | 全開放パーミッション変更を禁止 |
 | `Bash(dd *)` / `Bash(mkfs *)` | ディスク書き込み・フォーマットを禁止 |
 | `Bash(curl * \| bash)` / `Bash(wget * \| bash)` | ダウンロード即実行（RCE攻撃）を禁止 |
 | `Bash(git push --force *)` | 強制プッシュを禁止 |
 | `Bash(killall *)` | プロセス強制終了を禁止 |
+| `mcp__claude_ai_Gmail__trash_message` / `trash_thread` / `delete_label` | Claude Code純正Gmail連携でのメール削除・ゴミ箱移動を禁止 |
+| `mcp__gmail-team__gmail_delete_email` / `gmail_move_to_trash` / `gmail_batch_delete` / `gmail_batch_move_to_trash` | `@monsoft/mcp-gmail` 経由でのメール削除・ゴミ箱移動を禁止 |
 
 ---
 
@@ -51,7 +54,8 @@ Bash(mkdir [プロジェクトディレクトリ]/.team/**)
 
 セットアップ時に生成される `.team/CLAUDE.md` には、以下の行動ルールが書き込まれる:
 
-- ファイル削除前は必ずユーザーに確認を求める
+- ファイル削除の権限はClaudeに与えない。削除が必要なものは `0_inbox/trash/` へ移動する（`rm`系コマンドはdenyでブロック済み）
+- Gmail連携時、メール・スレッドの削除・ゴミ箱移動は行わない（該当ツールはdenyでブロック済み）
 - 知らないコマンドは実行前に日本語で内容を説明する
 - ツール実行の許可を求める際は以下のリスクを % で提示する:
   - 機密情報・秘密鍵の外部流出リスク
