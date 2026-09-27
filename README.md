@@ -129,16 +129,16 @@ Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リ�
 - **危険コマンドをブロック** — `rm`（単一ファイルも含め全面禁止）・`sudo`・`curl | bash`・`git push --force` など
 - **ファイル削除の権限を与えない** — Claudeに削除依頼をしても `rm` は使わず、`0_inbox/trash/` へ移動する運用に統一
 - **Gmailの削除・ゴミ箱移動を禁止** — 連携時もメールを削除させず、アーカイブ・ラベル付け・下書き保存までに限定
-- **承認不要操作を自動設定** — `.team/` 内のフォルダ作成・移動・`.md` ファイルの作成・編集は承認なしで実行
+- **承認不要操作を自動設定** — `.team/` 内のファイルの読み取り・作成・編集、フォルダ作成・移動は承認なしで実行
 
-自動生成される `settings.json` の `autoApprove` 設定:
+自動生成される `settings.json` の許可（`allow`）設定:
 
 ```json
 {
   "permissions": {
-    "autoApprove": [
-      "Write([CWD]/.team/**/*.md)",
-      "Edit([CWD]/.team/**/*.md)",
+    "allow": [
+      "Read(.team/**)",
+      "Edit(.team/**)",
       "Bash(mkdir [CWD]/.team/**)",
       "Bash(mkdir -p [CWD]/.team/**)",
       "Bash(mv [CWD]/.team/**)"
@@ -146,6 +146,8 @@ Claude Code で以下の2つのコマンドを実行する（GitHubのURL・リ�
   }
 }
 ```
+
+> v1.4.1 以前でセットアップした場合は、許可設定が効いておらず `.team/` 内の操作でも毎回確認が出ていた可能性がある。更新方法 → [docs/security.md](docs/security.md#v141-以前でセットアップした場合の更新方法)
 
 詳細な設定値 → [docs/security.md](docs/security.md)
 

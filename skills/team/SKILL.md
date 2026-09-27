@@ -112,16 +112,8 @@
   },
   "permissions": {
     "allow": [
-      "Read([CWD]/.team/**)",
-      "Write([CWD]/.team/**)",
-      "Edit([CWD]/.team/**)",
-      "Bash(mkdir [CWD]/.team/**)",
-      "Bash(mkdir -p [CWD]/.team/**)",
-      "Bash(mv [CWD]/.team/**)"
-    ],
-    "autoApprove": [
-      "Write([CWD]/.team/**/*.md)",
-      "Edit([CWD]/.team/**/*.md)",
+      "Read(.team/**)",
+      "Edit(.team/**)",
       "Bash(mkdir [CWD]/.team/**)",
       "Bash(mkdir -p [CWD]/.team/**)",
       "Bash(mv [CWD]/.team/**)"
